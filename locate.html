@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Interurban Campus</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="_css/bootstrap.min.css" rel="stylesheet" type="text/css">
+
+    <!-- Custom CSS -->
+    <link href="_css/simple-sidebar.css" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    
+    <link href="_css/campusmap.css" rel="stylesheet">
+
+    <!-- GA CODE -->
+    <script>
+	  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+	  ga('create', 'UA-639742-18', 'auto');
+	  ga('send', 'pageview');
+
+	</script>
+
+<style type="text/css">
+#binav {
+	width: 100%;
+	height: 100%;
+	background-color:rgba(0, 0, 0, 0.24);	
+	z-index: 60;
+}
+/*changed #binnav p to #map-buttons to clean up code */
+#map-buttons {
+	margin-top: 150px;
+}
+#welcome-text {
+	margin-top: 100px;
+}
+h2 {
+	color: #91bd36;
+}
+div #startLat {
+	visibility: hidden;
+}
+div #startLon {
+	visibility: hidden;
+}
+/*removed container: paddig-bottom: 20px; to solve padding issue */
+</style>
+</head>
+
+<body>
+<div class="container">
+<div class="navbar navbar-custom navbar-fixed-top">
+ <div class="navbar-header row col-xs-12">
+ 	<!-- REMOVED collapse hidden-xs from #banner so the logo shows up on mobile -->
+ 	<div id="banner" class="navbar-collapse col-md-2"><a  href="http://camosun.ca"><img src="_images/camosun-logo-white.png" id="banner-img" alt="Camosun College Logo"></a> 
+    <a href="./"></a> </div>
+    
+      
+      </div><!-- navbar-header row -->
+
+</div>
+</div><!-- container -->
+<div class="container-fluid">
+	<div class="row">
+	    <div id="welcome-text" class="col-xs-12 text-center">
+	       	<h2>Camosun Interactive Maps</h2>
+	       	<h4>Dectecting your location...</h4>
+	       	<div id="startLat"></div>
+	       	<div id="startLon"></div>
+	    </div><!-- /#wrapper -->
+    </div><!-- row -->
+</div><!-- container -->
+
+    <!-- jQuery -->
+    <script src="_scripts/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="_scripts/bootstrap.min.js"></script>
+
+    <!-- Menu Toggle Script -->
+
+     <!-- jQuery -->	
+<script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDMmRq3sg_byNuqEEugETI9PDae7x9WaeU&libraries=geometry,places&ext=.js"></script>
+<script type="text/javascript" src="_scripts/geoxml3.js"></script>
+<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js" integrity="sha256-xNjb53/rY+WmG+4L6tTl9m6PpqknWZvRt0rO1SRnJzw=" crossorigin="anonymous"></script> 
+
+
+<!-- Geolocation API -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jQuery-Geolocation/1.0.50/jquery.geolocation.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jQuery-Geolocation/1.0.50/jquery.geolocation.min.js"></script>
+
+<script type="text/javascript">
+	//Need to update the href links to the live server once this is pushed
+
+	//Global variables - Interuban and Lansdowne
+	var LatInter = 48.490965;
+	var LonInter = -123.416529;
+	var LatLans = 48.448031;
+	var LonLans = -123.322984;
+
+	//Check if browser support geolocation
+		if(navigator.geolocation) {
+		console.log("Geolocation is supported");
+	}else {
+		console.log("Geolocation is not supported");
+	}
+	
+	//Determine user's current location - ask for permission to locate
+	window.onload = function(){
+		var startPos;
+		//get rough estimate of user location, gets data a lot quicker
+		var geoOptions = {
+			maximumAge: 5 * 60 * 1000,
+			timeout: 10 * 1000
+		}
+
+		 setTimeout(function() {
+		 	//Loads Interurban campus by default.
+			window.location.href = "https://webservices-dev.camosun.ca/maps/lansdowne.html";
+		}, 10000); 
+		
+
+		var geoSuccess = function (position) {
+			startPos = position;
+			document.getElementById('startLat').innerHTML = startPos.coords.latitude;
+			document.getElementById('startLon').innerHTML = startPos.coords.longitude;
+			
+			calculateUserPosition(startPos.coords.latitude, startPos.coords.longitude);
+		};
+
+		var geoError = function(error){
+			console.log("Error has occurred. Error code: " + error.code);
+			
+			/* 
+			error code can be: 
+			0: unknown error
+			1: permission denied
+			2: position unavailable (response from location provider)
+			3: timed out
+			*/
+		};
+
+
+		//Calculate the distance of the user's location between campuses
+		function calculateUserPosition(LatUser, LonUser){
+			console.log("Your location is " + "" + LatUser + "" + LonUser);
+
+			var R = 6371; // earth's radius in km
+
+			//calculate distance of user and Interurban campus
+			var dLat1 = (LatInter - LatUser) * Math.PI / 180;
+			var dLon1 = (LonInter - LonUser) * Math.PI / 180;
+			var a = 
+				Math.sin(dLat1/2) * Math.sin(dLat1/2) + 
+				Math.cos(LatUser * Math.PI / 180) * Math.cos(LatInter * Math.PI / 180) 
+				* 
+				Math.sin(dLon1/2) * Math.sin(dLon1/2)
+			;
+			var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+			var distanceFromInter = R * c;
+
+			//
+			console.log(distanceFromInter + " km from Interurban");
+			
+			//calculate distance of user and Lansdowne campus
+			var dLat2 = (LatLans - LatUser) * Math.PI / 180;
+			var dLon2 = (LonLans - LonUser) * Math.PI / 180;
+
+			var a2 = 
+			Math.sin(dLat2/2) * Math.sin(dLat2/2) + 
+				Math.cos(LatUser * Math.PI / 180) * Math.cos(LatLans * Math.PI / 180) 
+				*
+				Math.sin(dLon2/2) * Math.sin(dLon2/2)
+			;
+			var c2 = 2 * Math.atan2(Math.sqrt(a2), Math.sqrt(1-a2));
+			var distanceFromLans = R * c2;
+
+			console.log(distanceFromLans + " km from Lansdowne");
+
+			var differenceInKm = distanceFromInter - distanceFromLans;
+
+			console.log(differenceInKm + " difference in km from user");
+
+			//if you are at lansdowne
+			if(distanceFromLans == 0){ 
+				console.log("You're at Lansdowne");
+			}
+			else if(distanceFromInter > distanceFromLans){
+				console.log("Your closest campus is Lansdowne campus!");
+				window.location.href = "https://webservices-dev.camosun.ca/maps/lansdowne.html";
+			}else if(distanceFromInter == 0){ 
+				console.log("You're at Interurban!");
+			}else if (distanceFromInter < distanceFromLans){
+				console.log("Your closest campus is Interurban campus!");
+				window.location.href = "https://webservices-dev.camosun.ca/maps/interurban.html";
+			}else if (distanceFromInter == distanceFromLans){
+				console.log("You're in the middle!");
+			}
+			
+		};/*CalcUserPosition */
+
+		
+		navigator.geolocation.getCurrentPosition(geoSuccess, geoError, geoOptions);
+	};
+
+
+	
+</script>
+</body>
+
+</html>

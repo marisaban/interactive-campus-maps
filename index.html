@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Interurban Campus</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="_css/bootstrap.min.css" rel="stylesheet" type="text/css">
+
+    <!-- Custom CSS -->
+    <link href="_css/simple-sidebar.css" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    
+    <link href="_css/campusmap.css" rel="stylesheet">
+
+    <!-- GA CODE -->
+    <script>
+	  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+	  ga('create', 'UA-639742-18', 'auto');
+	  ga('send', 'pageview');
+
+	</script>
+
+<style type="text/css">
+/* To create responsive background image, I added background-size: cover; */
+#wrapper2 {
+	background-image:url(_images/victoria-google-map-2.png);
+	background-repeat:no-repeat;
+	background-size: cover;
+	height: 1200px;	
+	width: 100%;
+	padding: 0;
+}
+
+#binav {
+	width: 100%;
+	height: 100%;
+	background-color:rgba(0, 0, 0, 0.24);	
+	z-index: 60;
+}
+/*changed #binnav p to #map-buttons to clean up code */
+#map-buttons {
+	margin-top: 150px;
+}
+#binav button {
+	/*changed color from #676667 to #91bd36 */
+	background-color:#91bd36;
+	color: #FFF;
+	
+}
+#binav button:hover {
+	border-color: #91bd36!important;
+	background-color:#fff;
+	color: #91bd36;
+}
+/*removed container: paddig-bottom: 20px; to solve padding issue */
+</style>
+</head>
+
+<body>
+<div class="container">
+<div class="navbar navbar-custom navbar-fixed-top">
+ <div class="navbar-header row col-xs-12">
+ 	<!-- REMOVED collapse hidden-xs from #banner so the logo shows up on mobile -->
+ 	<div id="banner" class="navbar-collapse col-md-2"><a  href="http://camosun.ca"><img src="_images/camosun-logo-white.png" alt="Camosun College Logo"></a> 
+ 	<a href="./"><img src="_images/campus-maps-text.png" alt="Camosun College Logo"></a> </div>
+    
+      
+      </div><!-- navbar-header row -->
+
+</div>
+</div><!-- container -->
+<div class="container-fluid">
+	<div class="row">
+	    <div id="wrapper2" class="col-xs-12">
+	        <div id="binav" class="col-xs-12 text-center">
+			  <a href="lansdowne.html"><button type="button" class="btn btn-primary btn-lg" id="map-buttons">Lansdowne</button></a>
+			  <a href="interurban.html"><button type="button" class="btn btn-primary btn-lg" id="map-buttons">Interurban</button></a></div>
+	    </div><!-- /#wrapper -->
+    </div>
+</div><!-- container -->
+
+    <!-- jQuery -->
+    <script src="_scripts/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="_scripts/bootstrap.min.js"></script>
+
+    <!-- Menu Toggle Script -->
+
+    
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false&libraries=geometry,places&ext=.js"></script>
+
+</body>
+
+</html>

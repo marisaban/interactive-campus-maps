@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Lansdowne Campus Map</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="_css/bootstrap.min.css" rel="stylesheet" type="text/css">
+
+    <!-- Custom CSS -->
+    <link href="_css/simple-sidebar.css" rel="stylesheet" type="text/css">
+    <link href="_css/campusmap.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/start/jquery-ui.css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+      <!-- GA CODE -->
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-639742-18', 'auto');
+      ga('send', 'pageview');
+
+    </script>
+
+</head>
+
+<body>
+<div class="container">
+<div class="navbar navbar-custom navbar-fixed-top">
+ <div class="navbar-header row col-xs-12">
+    
+    <div class="visible-xs"><!-- <ul class="nav navbar-nav"><li class="active"> -->
+       <a class="navbar-toggle navbar-btn" href="#menu-toggle" id="menu-toggle">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </a><!-- </li></ul> -->
+	</div>
+
+    <div id="banner" class="navbar-collapse col-md-2"><a  href="http://camosun.ca"><img src="_images/camosun-logo-white.png" id="banner-img" alt="Camosun College Logo"></a> 
+    <a href="./"></a> </div>
+
+    <div class="navbar-right">
+     <form class="navbar-form">
+        <div class="form-group" style="display:inline;">
+          <div class="input-group">
+          	<input type="text" id="pac-input" class="form-control ui-widget"  placeholder="Search">
+            <!-- <input type="text" class="form-control" placeholder="What are searching for?"> -->
+           <!-- <span class="input-group-addon"><span class="glyphicon glyphicon-search"></span> </span> -->
+           <span id="searchclear" class="glyphicon glyphicon-remove-circle" style="color: #ccc;"></span>
+          </div>
+        </div>
+      </form></div>
+      
+      
+      </div><!-- navbar-header row -->    
+
+</div>
+</div><!-- container -->
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper">
+<div class="sidebar-nav col-xs-12" id="poi">
+<div id="campusNav">
+<h3><a href="interurban.html">Interurban</a></h3>
+<h3><a href="lansdowne.html" class="active">Lansdowne</a></h3>
+</div>
+<h4>Points of Interest</h4>
+<form action="" method="post">
+<div class="checkbox">
+<label><input name="checkbox" alt="Parking checkbox"  onClick="boxclick(this,4)" type="checkbox" value="checkbox" /> Parking</label>
+</div>
+<div class="checkbox">
+<label>
+<input name="checkbox" alt="Parking checkbox"  onClick="boxclick(this,5)" type="checkbox" value="checkbox" /> Cafeterias</label>
+</div>
+<div class="checkbox">
+<label><input name="checkbox" alt="Parking checkbox"  onClick="boxclick(this,6)" type="checkbox" value="checkbox" /> Bookstore</label>
+</div>
+<div class="checkbox">
+<label><input name="checkbox" alt="Emergency Phones checkbox"  onClick="boxclick(this,3)" type="checkbox" value="checkbox" /> Bike Racks</label>
+</div>
+<div class="checkbox">
+<label><input name="checkbox" alt="Road Closure checkbox"  onClick="boxclick(this,8)" type="checkbox" value="checkbox" /> ATM</label>
+</div>
+<div class="checkbox">
+<label><input name="checkbox" alt="Construction checkbox"  onClick="boxclick(this,7)" type="checkbox" value="checkbox" /> Coffee</label>
+</div>
+<div class="checkbox">
+<label><input name="checkbox" alt="Library checkbox" onClick="boxclick(this,9)" type="checkbox" value="checkbox"/> Library</label>
+</div>
+</form>
+</div><!-- sidebar brand -->
+<div id="buildingList" class="sidebar-brand col-xs-12">
+<h4>Locations</h4>
+<div id="sidebar"></div>
+</div><!-- buildingList -->
+
+        </div>
+        <!-- /#sidebar-wrapper -->
+
+        <!-- Page Content -->
+        <div id="page-content-wrapper" class="col-xs-12">
+
+
+                        <div id="map"></div>
+
+
+            </div><!-- /#page-content-wrapper -->
+        </div><!-- /#wrapper -->
+
+    <!-- jQuery -->	
+<script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDMmRq3sg_byNuqEEugETI9PDae7x9WaeU&libraries=geometry,places&ext=.js"></script>
+<script type="text/javascript" src="_scripts/geoxml3.js"></script>
+<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js" integrity="sha256-xNjb53/rY+WmG+4L6tTl9m6PpqknWZvRt0rO1SRnJzw=" crossorigin="anonymous"></script> 
+
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="_scripts/bootstrap.min.js"></script>
+    <!-- Verge JavaScript -->
+    <script src="_scripts/verge.min.js"></script>
+
+    <!-- Menu Toggle Script -->
+    <script>
+    /* function to make side menu appear at device size */
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+    });
+
+	/* check function to make sure side menu appears when browswer width increased */
+        $(window).resize(function(e) {
+			if (verge.viewportW()>800) {
+		$("#wrapper").removeClass("toggled");
+			} else {
+	
+			}
+        });
+
+        $("#searchclear").click(function(){
+            $("#pac-input").val('');
+        });
+	
+    </script>
+
+    
+
+
+
+<script type="text/javascript">
+/* *** begin - KML LAYERS *** */
+// Random number generated for cache-busting
+var seconds = new Date().getTime();
+// Google Bike & Traffic Layers
+//var bikeLayer = new google.maps.BicyclingLayer();
+//var trafficLayer = new google.maps.TrafficLayer();
+// Variables set to URLs of custom KML layers made in Google Earth  
+var bikeRacksLayer = new google.maps.KmlLayer('https://webservices.camosun.ca/maps/_data/poi/bike-racks-lans.kml?time='+new Date().getTime(),
+                 {suppressInfoWindows: true,map: map,preserveViewport: true});   
+var parkingLayer = new google.maps.KmlLayer('https://webservices.camosun.ca/maps/_data/poi/Parking.kml?time='+new Date().getTime(),
+                  {suppressInfoWindows: true,map: map,preserveViewport: true});            
+var foodservicesLayer = new google.maps.KmlLayer('https://webservices.camosun.ca/maps/_data/poi/foodservices-lans.kml?time='+new Date().getTime(),
+                  {zIndex:10,map: map,preserveViewport: true});  
+var bookstoreLayer = new google.maps.KmlLayer('https://webservices.camosun.ca/maps/_data/poi/bookstore-lans.kml?time='+new Date().getTime(),
+                  {suppressInfoWindows: true,map: map,preserveViewport: true});    
+var coffeeLayer = new google.maps.KmlLayer('https://webservices.camosun.ca/maps/_data/poi/coffee-lans.kml?time='+new Date().getTime(),
+                  {suppressInfoWindows: true,map: map,preserveViewport: true});  
+var atmLayer = new google.maps.KmlLayer('https://webservices.camosun.ca/maps/_data/poi/atm-lans.kml?time='+new Date().getTime(),
+                  {suppressInfoWindows: true,map: map,preserveViewport: true});    
+var libraryLayer = new google.maps.KmlLayer('https://webservices.camosun.ca/maps/_data/poi/library-lansdowne.kml?time='+new Date().getTime(),
+                  {suppressInfoWindows: true,map: map,preserveViewport: true});     
+// Switch loop to toggle layers on and off  
+function boxclick(box,num) { 
+    switch (num)
+        {
+            case 1:
+                //if (box.checked)
+                //    {bikeLayer.setMap(map);} 
+                //else {bikeLayer.setMap(null);}
+                break;
+            case 2:
+                //if (box.checked)
+                    //{trafficLayer.setMap(map);} 
+               // else {trafficLayer.setMap(null);} 
+                break;  
+            case 3:
+                if (box.checked)
+                    {bikeRacksLayer.setMap(map);} 
+                else {bikeRacksLayer.setMap(null);}
+                break; 
+            case 4:
+                if (box.checked)
+                    {parkingLayer.setMap(map)} 
+                else {parkingLayer.setMap(null);}
+                break;
+            case 5:
+                if (box.checked)
+                    {foodservicesLayer.setMap(map);} 
+                else {foodservicesLayer.setMap(null);}
+                break;   
+            case 6:
+                if (box.checked)
+                    {bookstoreLayer.setMap(map);} 
+                else {bookstoreLayer.setMap(null);}
+                break; 
+            case 7:
+                if (box.checked)
+                    {coffeeLayer.setMap(map);} 
+                else {coffeeLayer.setMap(null);}
+                break;   
+            case 8:
+                if (box.checked)
+                    {atmLayer.setMap(map);} 
+                else {atmLayer.setMap(null);}
+                break;      
+            case 9:
+                if (box.checked)
+                    {libraryLayer.setMap(map);} 
+                else {libraryLayer.setMap(null)}
+                break;   
+            } //Switch 
+
+    } // kml layer function
+    /* *** end - KML Layers *** */
+	
+var map;
+function initMap() {
+  map = new google.maps.Map(document.getElementById('map'), {
+    center: {lat: 48.490802, lng: -123.416497},
+    zoom: 17
+  });
+
+    // array of styles
+    var styles = [
+        {
+            "featureType": "poi",
+            "elementType": "labels",
+            "stylers": [{ "visibility": "off" }]
+        },{
+            "featureType": "poi.business",
+            "elementType": "geometry",
+            "stylers": [{ "visibility": "off" }]
+        },{
+            "featureType": "landscape.man_made",
+            "elementType": "labels.text",
+            "stylers": [{ "visibility": "off" }]
+        },{
+            "featureType": "landscape.man_made",
+            "elementType": "geometry",
+            "stylers": [{ "visibility": "off" }]
+        }];
+// new styledMapType object, passing the array of styles and the name to be displayed on the map type control.
+    var styledMap = new google.maps.StyledMapType(styles,{name: "Styled Map"});
+    map.mapTypes.set('map_style', styledMap);
+    map.setMapTypeId('map_style');
+
+    // Sets geoxml class options
+   geoXml = new geoXML3.parser({
+            map: map,
+	     zIndex: 0,
+            singleInfoWindow: true,
+            afterParse: useTheData
+                });
+   geoXml.parse('_data/lansdowne.xml');
+
+        // sets the min and max zoom levels of the map
+    var opt = { minZoom: 6, maxZoom: 18,zIndex:0 };
+    map.setOptions(opt);
+
+//Generates search results from searchbar
+$.ajax({
+    url: "_data/lansdowne.xml", //your url
+    type: "POST", //may not need this-fiddle did-default is GET
+    dataType: "xml", 
+    success: function(xmlResponse) {
+        var data = $("Placemark", xmlResponse).map(function() {
+            return {
+                value: $("name", this).text()+" - ("+
+			( $.trim( $( "Abbrev", this ).text() ) )+ ") - "+
+              	( $.trim( $( "keyword", this ).text() ) ) ,
+                id: $("buildingId",this).text()
+            };
+        }).get();
+	var termTemplate = "<span class='ui-autocomplete-term'>%s</span>";
+        $("#pac-input").autocomplete({
+            source: data,
+	     open: function(e,ui) {
+            	var
+                acData = $(this).data('ui-autocomplete'),
+                styledTerm = termTemplate.replace('%s', acData.term);
+
+            	acData
+                .menu
+                .element
+                .find('li')
+                .each(function() {
+                    var me = $(this);
+                    var keywords = acData.term.split(' ').join('|');
+        		me.html(me.text().replace(new RegExp("(" + keywords + ")", "gi"), '<b>$1</b>'));
+                });
+			},
+            //minLength: 3,
+	     autoFocus: true,
+            select: function(event, ui) {
+                //$("p#result").html(ui.item ? "Selected: " + ui.item.value + ", coordinates: " + ui.item.id : "Nothing selected, input was " + $li);
+				google.maps.event.trigger(geoXml.docs[0].markers[ui.item.id],"click");
+				map.setCenter(geoXml.docs[0].markers[ui.item.id].getPosition());
+				//closes side bar for mobile devices	
+   				if (verge.viewportW()<800){
+					if ($("#wrapper").hasClass("toggled")){
+				$("#wrapper").toggleClass("toggled");
+					} }
+            }
+        });
+    }
+});
+    //close infobox when clicking on map
+    google.maps.event.addListener(map, 'click', function(event){
+        console.log("click");
+        $(".gm-style-iw")
+        .parent("div")
+        .hide();
+    });
+}// initMap function end
+
+function kmlClick(marker) {
+   google.maps.event.trigger(geoXml.docs[0].markers[marker],"click");
+   map.setCenter(geoXml.docs[0].markers[marker].getPosition());
+
+	//closes side bar for mobile devices	
+   if (verge.viewportW()<800) {
+	$("#wrapper").toggleClass("toggled");
+	}
+}
+
+
+function useTheData(doc){
+  // Geodata handling goes here, using JSON properties of the doc object
+  // Creates side bar navigationclass="list-unstyled"
+  var sidebarHtml = '<ul class="list-unstyled">';
+  for (var i = 0; i < doc[0].markers.length; i++) {
+    // console.log(doc[0].markers[i].title);
+    sidebarHtml += '<li><a href="javascript:kmlClick('+i+');">'+doc[0].placemarks[i].name+'</a></li>';
+  }
+  sidebarHtml += "</ul>";
+  document.getElementById("sidebar").innerHTML = sidebarHtml;
+};
+
+google.maps.event.addDomListener(window,'load',initMap);
+//]]> 
+
+</script>
+</body>
+
+</html>
